@@ -11,7 +11,7 @@ final class MuebleTradicional extends MuebleBase {
         if ($numero < 15 || $numero > 300) {
             return false;
         } else {
-            $this->_porcentajeReciclado = $numero;
+            $this->_peso = $numero;
             return true;
         }
     }

@@ -1,5 +1,5 @@
 <?php 
-include_once(dirname(__FILE__) . '../../scripts/librerias/val_normal.php');
+include_once(dirname(__FILE__) . '/../../scripts/librerias/val_normal.php');
 
 final class MuebleReciclado extends MuebleBase {
     
