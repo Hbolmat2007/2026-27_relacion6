@@ -1,10 +1,19 @@
-```php
 <?php
 abstract class MuebleBase {
     // Constante y contador de muebles creados
     private const int MAXIMO_MUEBLES = 100;
     private static int $_mueblesCreados = 0;
     private static $_regexFabricante = "/^FaMu:/";
+
+    // Propiedades privadas de la clase
+    private string          $_nombre;
+    private string          $_fabricante;
+    private string          $_pais;
+    private int             $_anio;
+    private string          $_fechaIniVenta;
+    private string          $_fechaFinVenta;
+    private float           $_precio;
+    private Caracteristicas $_caracteristicas;
 
     // Comprueba si una fecha tiene el formato correcto
     private function esFechaValida(string $fecha) {
@@ -15,15 +24,6 @@ abstract class MuebleBase {
 
         return $fechaConvertida->format('d/m/Y') === $fecha;
     }
-
-    // Propiedades privadas de la clase
-    private string  $_nombre;
-    private string  $_fabricante;
-    private string  $_pais;
-    private int     $_anio;
-    private string  $_fechaIniVenta;
-    private string  $_fechaFinVenta;
-    private float   $_precio;
 
     // Getter y setter del nombre
     public function get_nombre() : string { return $this->_nombre; }
@@ -111,6 +111,17 @@ abstract class MuebleBase {
         }
     }
 
+    public function get_caracteristicas() : Caracteristicas { return $this->_caracteristicas; }
+    public function anadirCaracteristicas(string $carac, mixed $valor, mixed ...$resto) {
+        // Asignamos el parámetro $valor a la característica $carac 
+        $this->_caracteristicas->$carac = $valor;
+        // Recorremos el bucle de dos en dos. 
+        // Si la posición siguiente se pasa de la longitud, se para de recorrer.
+        for ($cont = 0; $cont + 1< count($resto); $cont = $cont + 2) {
+            $this->_caracteristicas->{$resto[$cont]} = $resto[$cont + 1];
+        }
+    }
+
     // Constructor
     public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, ?string $fechaIniVenta = null, string $fechaFinVenta = "31/12/2040", float $precio = 30) {
 
@@ -155,7 +166,9 @@ abstract class MuebleBase {
         if (!$this->set_precio($precio)) {
             $this->set_precio(30);
         }
-                
+         
+        
+        $this->_caracteristicas = new Caracteristicas();
         // Aumentamos el contador de muebles 
         self::$_mueblesCreados++;
     }
@@ -171,11 +184,14 @@ abstract class MuebleBase {
 
     // Función tostring
     public function __toString() {
-        return "Mueble de clase " . get_class($this) . " con nombre "
+        $str = "Mueble de clase " . get_class($this) . " con nombre "
          . $this->_nombre . ", fabricante " . $this->_fabricante . 
         ", fabricado en " . $this->_pais . " a partir del año " . $this->_anio . 
         ", vendido desde el " . $this->_fechaIniVenta . " hasta el " . 
-        $this->_fechaFinVenta . ", precio ". $this->_precio . ".";
+        $this->_fechaFinVenta . ", precio ". $this->_precio . ". Características: "
+        . $this->get_caracteristicas()->__toString() . ". ";
+
+        return $str;
     }
 
     // Impide crear propiedades dinámicas
@@ -184,4 +200,3 @@ abstract class MuebleBase {
     }
 }
 ?>
-```

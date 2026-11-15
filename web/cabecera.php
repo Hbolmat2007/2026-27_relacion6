@@ -1,4 +1,9 @@
 <?php 
+include_once(dirname(__FILE__) . "/aplicacion/clases/curso2026/MuebleBase.php");
+include_once(dirname(__FILE__) . "/aplicacion/clases/curso2026/MuebleTradicional.php");
+include_once(dirname(__FILE__) . "/aplicacion/clases/curso2026/MuebleReciclado.php");
+include_once(dirname(__FILE__) . "/aplicacion/clases/curso2026/Caracteristicas.php");
+
 define("RUTABASE", dirname(__FILE__));
 //define("MODO_TRABAJO","produccion"); //en "produccion o en desarrollo
 define("MODO_TRABAJO","desarrollo"); //en "produccion o en desarrollo
