@@ -1,9 +1,5 @@
 <?php
 include_once(dirname(__FILE__) . "/../../cabecera.php");
-include_once(dirname(__FILE__) . "/../clases/curso2026/MuebleReciclado.php");
-include_once(dirname(__FILE__) . "/../clases/curso2026/MuebleTradicional.php");
-include_once(dirname(__FILE__) . "/../clases/curso2026/MuebleBase.php");
-include_once(dirname(__FILE__) . "/../clases/curso2026/Caracteristicas.php");
 
 
 // Controlador

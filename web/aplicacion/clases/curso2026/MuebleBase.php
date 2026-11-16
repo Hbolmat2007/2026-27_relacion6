@@ -14,6 +14,8 @@ abstract class MuebleBase {
     private string          $_fechaFinVenta;
     private float           $_precio;
     private Caracteristicas $_caracteristicas;
+    private Materiales      $_material;
+    
 
     // Comprueba si una fecha tiene el formato correcto
     private function esFechaValida(string $fecha) {
@@ -122,8 +124,18 @@ abstract class MuebleBase {
         }
     }
 
+    public function get_material_int() : int { return $this->_material->value; }
+    public function getmaterialDescripcion() : string { return $this->_material->name; }
+
+    public function set_material(int | string $material) : bool {
+        if (Materiales::tryFrom($material) !== null) { 
+            $this->_material = Materiales::tryFrom($material);
+            return true;
+        }
+        return false;
+    }
     // Constructor
-    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, ?string $fechaIniVenta = null, string $fechaFinVenta = "31/12/2040", float $precio = 30) {
+    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, ?string $fechaIniVenta = null, string $fechaFinVenta = "31/12/2040", float $precio = 30, int $material = 10) {
 
         // Comprobamos que no se haya alcanzado el máximo de muebles
         if (self::$_mueblesCreados >= self::MAXIMO_MUEBLES) {
@@ -166,7 +178,10 @@ abstract class MuebleBase {
         if (!$this->set_precio($precio)) {
             $this->set_precio(30);
         }
-         
+        
+        if (!$this->set_material($material)) {
+            $this->set_material(10);
+        }
         
         $this->_caracteristicas = new Caracteristicas();
         // Aumentamos el contador de muebles 
@@ -189,7 +204,7 @@ abstract class MuebleBase {
         ", fabricado en " . $this->_pais . " a partir del año " . $this->_anio . 
         ", vendido desde el " . $this->_fechaIniVenta . " hasta el " . 
         $this->_fechaFinVenta . ", precio ". $this->_precio . ". Características: "
-        . $this->get_caracteristicas()->__toString() . ". ";
+        . $this->get_caracteristicas()->__toString() . ". Del material" . $this->getmaterialDescripcion();
 
         return $str;
     }

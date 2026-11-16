@@ -23,7 +23,8 @@ $datos = [
     "anio" => $mueble->get_anio(),
     "fechaIniVenta" => $mueble->get_fechaIniVenta(),
     "fechaFinVenta" => $mueble->get_fechaFinVenta(),
-    "precio" => $mueble->get_precio()
+    "precio" => $mueble->get_precio(),
+    "material" => $mueble->get_material_int()
 ];
 
 // Recogemos también las propiedades adicionales
@@ -57,7 +58,7 @@ if (isset($_POST["guardar"])) {
     // Validación mediante los métodos set
     $anio = filter_var($datos["anio"], FILTER_VALIDATE_INT);
 
-    $valido = $auxiliar->set_nombre($datos["nombre"]);
+    $valido = $auxiliar->set_nombre($datos["nombre"]) && $auxiliar->set_material($datos["material"]);
 
     if ($anio !== false) {
         $valido = $valido && $auxiliar->set_pais($datos["pais"]);
@@ -96,6 +97,11 @@ if (isset($_POST["guardar"])) {
         $valido = false;
     }
 
+    // Material
+    if ($datos["material"] === null) {
+        $valido = false; 
+    }
+
     // Propiedades específicas de cada tipo
     if ($mueble instanceof MuebleReciclado) {
 
@@ -122,6 +128,7 @@ if (isset($_POST["guardar"])) {
         }
     }
 
+
     // Si todo es correcto, modificamos el mueble
     if ($valido) {
 
@@ -132,7 +139,9 @@ if (isset($_POST["guardar"])) {
         $mueble->set_fechaIniVenta($datos["fechaIniVenta"]);
         $mueble->set_fechaFinVenta($datos["fechaFinVenta"]);
         $mueble->set_precio((float) $datos["precio"]);
+        $mueble->set_material($datos["material"]);
 
+        
         if ($mueble instanceof MuebleReciclado) {
             $mueble->set_porcentajeReciclado((int) $datos["porcentajeReciclado"]);
         } else if ($mueble instanceof MuebleTradicional) {
@@ -176,6 +185,7 @@ function cuerpo() {
         <p>Fecha inicial de venta: <?php echo $mueble->get_fechaIniVenta(); ?></p>
         <p>Fecha final de venta: <?php echo $mueble->get_fechaFinVenta(); ?></p>
         <p>Precio: <?php echo $mueble->get_precio(); ?>€</p>
+        <p>Material: <?php echo $mueble->getMaterialDescripcion(); ?></p>
 
         <h3>Propiedades adicionales</h3>
 
@@ -248,6 +258,14 @@ function cuerpo() {
                    value="<?php echo htmlspecialchars((string) $datos["precio"]); ?>">
         </p>
 
+        <p>Material: </p>
+        <select name="Materiales" id="">
+            <?php
+            $arrayMateriales = Materiales::cases();
+            for ($cont = 0; $cont < count($arrayMateriales); $cont++) {?>
+                <option value="<?php echo $arrayMateriales[$cont]->value; ?>"><?php echo $arrayMateriales[$cont]->name; ?></option>
+            <?php } ?>
+        </select>
         <?php if ($mueble instanceof MuebleReciclado) { ?>
 
             <p>

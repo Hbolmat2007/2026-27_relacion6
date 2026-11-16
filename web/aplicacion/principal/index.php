@@ -14,6 +14,7 @@ function dibujarTabla(array $array) {
                 <th>Nombre</th>
                 <th>Año</th>
                 <th>Precio</th>
+                <th>Material</th>
             </tr>
     <?php
     for ($cont = 1; $cont <= count($array); $cont++) {
@@ -24,6 +25,7 @@ function dibujarTabla(array $array) {
             <td> <?php echo $array[$cont]->get_nombre(); ?></td>
             <td> <?php echo $array[$cont]->get_anio(); ?></td>
             <td> <?php echo $array[$cont]->get_precio() . "€"; ?></td>
+            <td> <?php echo $array[$cont]->getMaterialDescripcion(); ?></td>
         </tr>
         <?php
     }
@@ -52,6 +54,7 @@ function mostrarMueble(int $valor, array $arrayMuebles) {
     <p>Fecha inicial de venta: <?php echo $mueble->get_fechaIniVenta(); ?></p>
     <p>Fecha final de venta: <?php echo $mueble->get_fechaFinVenta(); ?></p>
     <p>Precio: <?php echo $mueble->get_precio(); ?>€</p>
+    <p>Material: <?php echo $mueble->getMaterialDescripcion(); ?></p>
 
     <h3>Propiedades adicionales</h3>
 
